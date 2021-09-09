@@ -1,5 +1,14 @@
+/*
+biblioteca.c
+Definição dos métodos GuardarLivro e RetirarLivro
+*/
 #include "biblioteca.h"
 
+/*
+Função: GuardarLivro - Remove um item Livro da pilha e adiciona na lista modificando o atributo status para true.
+@param L: Pilha Dinâmica de Livros
+@param P: Lista Estática de Prateleiras
+*/
 void GuardarLivro(Pilha *L, Lista *P)
 {
     Block *aux;
@@ -26,6 +35,11 @@ void GuardarLivro(Pilha *L, Lista *P)
     }
 }
 
+/*
+Função: RetirarLivro - Remove as Reservas de uma fila e procura nas prateleiras alterando o atributo status.
+@param R: Fila Dinâmica de Reservas
+@param P: Lista Estática de Prateleiras
+*/
 void RetirarLivro(Fila *R, Lista *P)
 {
     Blockf *aux;

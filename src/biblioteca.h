@@ -1,3 +1,7 @@
+/*
+biblioteca.h
+Métodos Guardar e Retirar Livros - Definição em biblioteca.c
+*/
 #ifndef BIBLIOTECA_H
 #define BIBLIOTECA_H
 

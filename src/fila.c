@@ -1,3 +1,7 @@
+/*
+fila.c
+Métodos da Estrutura - Fila Dinâmica
+*/
 #include "fila.h"
 
 void FilaVazia(Fila *f)

@@ -1,3 +1,20 @@
+/*
+Trabalho Final da Disciplina de AEDS I
+DATA: 09/09/2021
+-------------------------------------------------------
+Representação de um sistema de biblioteca virtual
+(Guardar livros Devolvidos & Retirar Livros Reservados)
+-------------------------------------------------------
+Integrantes do Grupo:
+Diego Henrique Almeida Trindade
+Frederico Dantés Macedo Neves
+Gabriel Vitor Silva
+Jorge Vitor Gonçalves de Souza
+-------------------------------------------------------
+main.c
+Estrutura principal do programa
+Menu com opções de execução de chamadas de métodos
+*/
 #include "pilha.h"
 #include "lista.h"
 #include "fila.h"
@@ -23,6 +40,7 @@ int main()
         Lista P; // lista de prateleiras
         Fila R;  // fila de reserva
 
+        //Inicializando as estruturas vazias
         PilhaVazia(&L);
         FLVazia(&P);
         FilaVazia(&R);
@@ -30,6 +48,7 @@ int main()
         printf("Realizando leitura de banco de dados...\n");
         //sleep(1);
 
+        //Tokenizando as entradas de texto do arquivo.
         pilhaTOK("./arq_livros.txt", &L);
         filaTOK("./arq_reservas.txt", &R);
         //PilhaImprime(&L);
@@ -37,10 +56,12 @@ int main()
         printf("Gerando pratileiras virtuais...\n");
         //sleep(1);
 
+        //Inicializando as prateleiras e adicionando indices
         Initialize(&P);
 
         int choice = 0;
 
+        //Menu principal do programa (FRONT END)
         while (choice != 9)
         {
             printf("\nMENU:\n[1]Guardar livros recebidos nas prateleiras.\n[2]Retirar livros reservados das prateleiras.\n[3]Imprimir relatório das prateleiras.\n[9]Sair.\n");

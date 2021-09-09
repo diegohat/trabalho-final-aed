@@ -1,3 +1,8 @@
+/*
+fila.h
+Definição de estruturas dos livros e pilha
+Estrutura de Dados - Pilha Dinâmica
+*/
 #ifndef PILHA_H
 #define PILHA_H
 

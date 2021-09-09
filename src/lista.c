@@ -1,3 +1,8 @@
+/*
+lista.c
+Métodos da Estrutura - Lista Estática
+Método Initialize para inicializar as prateleiras pra receberem os livros
+*/
 #include "lista.h"
 
 void FLVazia(Lista *l)
@@ -6,6 +11,10 @@ void FLVazia(Lista *l)
 	l->last = 0;
 }
 
+/*
+Função: Initialize - Inicializa as prateleiras e adiciona um indice a cada uma
+@param l: Lista Estática
+*/
 void Initialize(Lista *l)
 {
 	int id = 1;

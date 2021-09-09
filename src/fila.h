@@ -1,3 +1,8 @@
+/*
+fila.h
+Definição de estruturas das reservas e fila
+Estrutura de Dados - Fila Dinâmica
+*/
 #ifndef FILA_H
 #define FILA_H
 

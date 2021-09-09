@@ -1,3 +1,7 @@
+/*
+pilha.c
+Métodos da Estrutura - Pilha Dinâmica
+*/
 #include "pilha.h"
 
 void PilhaVazia(Pilha *p)
