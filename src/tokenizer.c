@@ -1,6 +1,7 @@
-#include"tokenizer.h"
+#include "tokenizer.h"
 
-void pilhaTOK(char *path, Pilha *L){
+void pilhaTOK(char *path, Pilha *L)
+{
     FILE *file;
     const char s[] = "P,";
     char *tok;
@@ -8,19 +9,22 @@ void pilhaTOK(char *path, Pilha *L){
     char *res;
 
     file = fopen(path, "r");
-    if(file == NULL){
+    if (file == NULL)
+    {
         printf("Não foi possível abrir o arquivo!\n");
         return;
     }
-    
-    while(!feof(file)){ 
-        Livro *d = malloc (sizeof(Livro));
+
+    while (!feof(file))
+    {
+        Livro *d = malloc(sizeof(Livro));
         res = fgets(linha, 1024, file);
         tok = strtok(res, s);
         d->prateleira = atoi(tok);
-        
-        while(tok != NULL){
-            d->cod = atoi(tok);        
+
+        while (tok != NULL)
+        {
+            d->cod = atoi(tok);
             tok = strtok(NULL, s);
             d->status = false;
         }
@@ -29,7 +33,8 @@ void pilhaTOK(char *path, Pilha *L){
     fclose(file);
 }
 
-void filaTOK(char *path, Fila *R){
+void filaTOK(char *path, Fila *R)
+{
     FILE *file;
     const char s[] = "R,";
     char *tok;
@@ -37,21 +42,24 @@ void filaTOK(char *path, Fila *R){
     char *res;
 
     file = fopen(path, "r");
-    if(file == NULL){
+    if (file == NULL)
+    {
         printf("Não foi possível abrir o arquivo!\n");
         return;
     }
-    
-    while(!feof(file)){ 
-        Reserva *r = malloc (sizeof(Reserva));
+
+    while (!feof(file))
+    {
+        Reserva *r = malloc(sizeof(Reserva));
         res = fgets(linha, 1024, file);
         tok = strtok(res, s);
         r->prateleira = atoi(tok);
-        while(tok != NULL){
-            r->cod = atoi(tok);      
+        while (tok != NULL)
+        {
+            r->cod = atoi(tok);
             tok = strtok(NULL, s);
         }
-        
+
         Enfileira(R, *r);
     }
     fclose(file);

@@ -1,25 +1,28 @@
-#ifndef FILA_H 
+#ifndef FILA_H
 #define FILA_H
 
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
 typedef struct Reserva Reserva;
 typedef struct Blockf Blockf;
 typedef struct Fila Fila;
 
-struct Reserva{
-    int prateleira;
+struct Reserva
+{
+	int prateleira;
 	int cod;
 };
 
-struct Blockf{
+struct Blockf
+{
 	Reserva data;
 	Blockf *prox;
 };
 
-struct Fila{
+struct Fila
+{
 	Blockf *first;
 	Blockf *last;
 };

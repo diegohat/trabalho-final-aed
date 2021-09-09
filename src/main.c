@@ -1,31 +1,91 @@
-#include"pilha.h"
-#include"lista.h"
-#include"fila.h"
-#include"biblioteca.h"
-#include"tokenizer.h"
+#include "pilha.h"
+#include "lista.h"
+#include "fila.h"
+#include "biblioteca.h"
+#include "tokenizer.h"
 
-int main(){
-    Pilha L;    // pilha de livros
-    Lista P;    // lista de prateleiras
-    Fila R;     // fila de reserva
+#include <time.h>
+#include <unistd.h>
 
-    PilhaVazia(&L);
-    FLVazia(&P);
-    FilaVazia(&R);
+int main()
+{
+    char validate = 0;
 
-    pilhaTOK("./arq_livros.txt", &L);
-    filaTOK("./arq_reservas.txt", &R);
-    //PilhaImprime(&L);
+    printf("Bem-vindo a biblioteca virtual! Deseja iniciar o programa? [s] / [n]\n");
+    scanf("%c", &validate);
 
-    Initialize(&P);
+    if (validate == 's' || validate == 'S')
+    {
+        printf("Inicializando a biblioteca...\n");
+        //sleep(1);
 
-    GuardarLivro(&L, &P);
+        Pilha L; // pilha de livros
+        Lista P; // lista de prateleiras
+        Fila R;  // fila de reserva
 
-    LImprime(&P);
+        PilhaVazia(&L);
+        FLVazia(&P);
+        FilaVazia(&R);
 
-    RetirarLivro(&R, &P);
-    
-    LImprime(&P);  
+        printf("Realizando leitura de banco de dados...\n");
+        //sleep(1);
 
-    return 0;
+        pilhaTOK("./arq_livros.txt", &L);
+        filaTOK("./arq_reservas.txt", &R);
+        //PilhaImprime(&L);
+
+        printf("Gerando pratileiras virtuais...\n");
+        //sleep(1);
+
+        Initialize(&P);
+
+        int choice = 0;
+
+        while (choice != 9)
+        {
+            printf("\nMENU:\n[1]Guardar livros recebidos nas prateleiras.\n[2]Retirar livros reservados das prateleiras.\n[3]Imprimir relatório das prateleiras.\n[9]Sair.\n");
+
+            scanf("%i", &choice);
+
+            switch (choice)
+            {
+            case 1:
+                printf("Guardando livros nas posições corretas...\n");
+                GuardarLivro(&L, &P);
+                //sleep(1);
+                printf("Livros guardados.\n");
+                break;
+
+            case 2:
+                printf("Retirando livros reservados para locação...\n");
+                RetirarLivro(&R, &P);
+                //sleep(1);
+                printf("Livros retirados.\n");
+                break;
+            
+            case 3:
+                printf("Imprimindo relatório...\n");
+                //sleep(1);
+                LImprime(&P);
+                printf("Fim do relatório.\n");
+                break;
+
+            case 9:
+                printf("Obrigado por utilizar o sistema de biblioteca virtual.\n");
+                break;
+
+            default:
+                printf("Digite uma opção válida.\n");
+                break;
+            }
+
+
+        }
+        return 0;
+    }
+    else
+    {
+        printf("Obrigado por utilizar o sistema de biblioteca virtual.\n");
+        return 0;
+    }
 }

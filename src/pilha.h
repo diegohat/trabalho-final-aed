@@ -1,26 +1,29 @@
-#ifndef PILHA_H 
+#ifndef PILHA_H
 #define PILHA_H
 
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
 typedef struct Livro Livro;
 typedef struct Block Block;
 typedef struct Pilha Pilha;
 
-struct Livro{
-    int prateleira;
+struct Livro
+{
+	int prateleira;
 	int cod;
-    bool status;
+	bool status;
 };
 
-struct Block{
+struct Block
+{
 	Livro data;
 	Block *prox;
 };
 
-struct Pilha{
+struct Pilha
+{
 	Block *base;
 	Block *top;
 };
