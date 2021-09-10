@@ -313,6 +313,61 @@ f (n) = O(n³): Esses algoritmos são ditos de complexidade cúbica
  - Quando n é 100, o número de operações é da ordem e 1 milhão
  - Sempre que n dobra, o tempo de execução fica multiplicado por 8
 
+Sendo um codigo assim, capaz de provar que o custo atingido será viável visto os benefícios que trará para a operação da biblioteca.
+Ha outra forma de ser apresentado, usando metódos de ordenação mais eficaveis como **quicksort** e o **Heapsort**.
+
+-Exemplo de quicksort em pseudocódigo:
+```
+procedimento QuickSort(X[], IniVet, FimVet)
+var
+   i, j, pivo, aux
+início
+   i <- IniVet
+   j <- FimVet
+   pivo <- X[(IniVet + FimVet) div 2]
+   enquanto(i <= j)
+    |      enquanto (X[i] < pivo) faça
+    |       |   i <- i + 1
+    |      fimEnquanto
+    |      enquanto (X[j] > pivo) faça
+    |       |   j <- j - 1
+    |      fimEnquanto
+    |      se (i <= j) então
+    |       |   aux  <- X[i]
+    |       |   X[i] <- X[j]
+    |       |   X[j] <- aux
+    |       |   i <- i + 1
+    |       |   j <- j - 1
+    |      fimSe
+   fimEnquanto
+   se (IniVet < j) então
+    |  QuickSort(X, IniVet, j)
+   fimSe
+   se (i < FimVet) então
+    |  QuickSort(X, i, FimVet)
+   fimSe
+fimProcedimento
+
+```
+Comportamento no pior caso
+
+O pior caso de particionamento ocorre quando o elemento pivô divide a lista de forma desbalanceada, ou seja, divide a lista em duas sub listas: uma com tamanho 0 e outra com tamanho n - 1 (no qual n se refere ao tamanho da lista original). Isso pode ocorrer quando o elemento pivô é o maior ou menor elemento da lista, ou seja, quando a lista já está ordenada, ou inversamente ordenada.
+
+Se isso acontece em todas as chamadas do método de particionamento, então cada etapa recursiva chamará listas de tamanho igual à lista anterior - 1. Teremos assim, a seguinte relação de recorrência:
+
+![image](https://user-images.githubusercontent.com/54191675/132904903-51ed0f61-f494-4803-82a0-dca11b75622a.png)
+
+Se somarmos os custos em cada nível de recursão, teremos uma série aritmética que tem valor θ(n) assim, o algoritmo terá tempo de execução igual à θ(n²) 
+
+Comportamento no melhor caso
+
+O melhor caso de particionamento acontece quando ele produz duas listas de tamanho não maior que n/2, uma vez que uma lista terá tamanho [n/2] e outra tamanho [n/2] - 1. Nesse caso, o quicksort é executado com maior rapidez. A relação de recorrência é a seguinte: 
+
+![image](https://user-images.githubusercontent.com/54191675/132905137-594d8d7a-e5ad-47ed-a6b1-06853327cc92.png)
+
+que, a partir do teorema mestre, terá solução: ![image](https://user-images.githubusercontent.com/54191675/132905271-9d2e989e-4b1a-4929-acf2-682b02d680e9.png)
+
+
 ## O que espera receber como resultado: ##
 
 Desenvolvida toda a parte da implementação dos códigos do programa, é esperado que obtenha-se, como resultado, um relatório em que seria mostrado a relação de todos os livros por prateleira, de forma que essas seriam dispostas pela numeração, além é claro da relação dos livros que pertencem a cada prateleira. Ademais, seria informado também juntamente a cada exemplar, qual seu status no atual momento, isto é, se o livro encontra-se disponível ou se ele está locado, garantindo-se assim, todas as informações pertinentes para o bibliotecário, como se o exemplar existe na biblioteca, e caso exista, em que prateleira/posição ele se encontra e se ele tem disponibilidade para locação.
