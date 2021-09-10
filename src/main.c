@@ -34,7 +34,7 @@ int main()
     if (validate == 's' || validate == 'S')
     {
         printf("Inicializando a biblioteca...\n");
-        //sleep(1);
+        sleep(1);
 
         Pilha L; // pilha de livros
         Lista P; // lista de prateleiras
@@ -46,7 +46,7 @@ int main()
         FilaVazia(&R);
 
         printf("Realizando leitura de banco de dados...\n");
-        //sleep(1);
+        sleep(1);
 
         //Tokenizando as entradas de texto do arquivo.
         pilhaTOK("./arq_livros.txt", &L);
@@ -54,7 +54,7 @@ int main()
         //PilhaImprime(&L);
 
         printf("Gerando pratileiras virtuais...\n");
-        //sleep(1);
+        sleep(1);
 
         //Inicializando as prateleiras e adicionando indices
         Initialize(&P);
@@ -73,22 +73,22 @@ int main()
             case 1:
                 printf("Guardando livros nas posições corretas...\n");
                 GuardarLivro(&L, &P);
-                //sleep(1);
+                sleep(1);
                 printf("Livros guardados.\n");
                 break;
 
             case 2:
                 printf("Retirando livros reservados para locação...\n");
                 RetirarLivro(&R, &P);
-                //sleep(1);
+                sleep(1);
                 printf("Livros retirados.\n");
                 break;
             
             case 3:
                 printf("Imprimindo relatório...\n");
-                //sleep(1);
+                sleep(1);
                 LImprime(&P);
-                printf("Fim do relatório.\n");
+                printf("\nFim do relatório.\n");
                 break;
 
             case 9:

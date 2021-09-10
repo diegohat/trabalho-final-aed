@@ -49,16 +49,21 @@ void LImprime(Lista *l)
 {
 	for (int i = l->first; i < l->last; i++)
 	{
+		printf("Prateleira: %d", l->vet[i].id);
+		printf("\t\t\t");
+	}
+	
+	for (int j = 0; j < MAXLIVRO; j++)
+	{
 		printf("\n");
-		printf("Prateleira: %d\n", l->vet[i].id);
 
-		for (int j = 0; j < MAXLIVRO; j++)
+		for (int i = l->first; i < l->last; i++)
 		{
 			// printf("Prateleira: %d\t", l->vet[i].livros[j].prateleira);
 			// printf("\n");
 			printf("Cod: %d\t", l->vet[i].livros[j].cod);
 			printf("Status: %d\t", l->vet[i].livros[j].status);
-			printf("\n");
+			printf("\t");
 		}
 	}
 }
