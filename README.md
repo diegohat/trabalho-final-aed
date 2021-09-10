@@ -4,6 +4,7 @@ CEFET - MG Campus V \
 Jorge Vitor G. de Souza \
 Gabriel Vitor Silva \
 Diego Trindade \
+Frederico Dantés Macedo Neves
 
 ## Compilar ##
 ```
