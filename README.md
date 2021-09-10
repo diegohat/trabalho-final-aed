@@ -128,30 +128,30 @@ void pilhaTOK(char *path, Pilha *L)
     char linha[1024];
     char *res;
 
-    file = fopen(path, "r");//-------------------------->n
+    file = fopen(path, "r");//-------------------------------------------->n
     if (file == NULL)
     {
         printf("Não foi possível abrir o arquivo!\n");//>1 ou 0
         return;
     }
 
-    while (!feof(file))//------------------------------->n
+    while (!feof(file))//------------------------------------------------->n
     {
-        Livro *d = malloc(sizeof(Livro));//------------->n
-        res = fgets(linha, 1024, file);//--------------->n
-        tok = strtok(res, s);//------------------------->n
-        d->prateleira = atoi(tok);//-------------------->n
+        Livro *d = malloc(sizeof(Livro));//------------------------------->n
+        res = fgets(linha, 1024, file);//--------------------------------->n
+        tok = strtok(res, s);//------------------------------------------->n
+        d->prateleira = atoi(tok);//-------------------------------------->n
 
-        while (tok != NULL)//--------------------------->n²
+        while (tok != NULL)//--------------------------------------------->n²
         {
-            d->cod = atoi(tok);//----------------------->n²
-            tok = strtok(NULL, s);//-------------------->n²
-            d->status = false;//------------------------>n²
+            d->cod = atoi(tok);//----------------------------------------->n²
+            tok = strtok(NULL, s);//-------------------------------------->n²
+            d->status = false;//------------------------------------------>n²
         }
-        Push(L, *d);//---------------------------------->n
+        Push(L, *d);//---------------------------------------------------->n
     }
-    fclose(file);//------------------------------------->1
-    //------------------------------------------->total: 4n²+7n+1
+    fclose(file);//------------------------------------------------------->1
+    //-------------------------------------------------------------------->total: 4n²+7n+1
 }
 
 ```
@@ -166,29 +166,29 @@ void filaTOK(char *path, Fila *R)
     char linha[1024];
     char *res;
 
-    file = fopen(path, "r");//------------------------------->1
-    if (file == NULL)//-------------------------------------->1
+    file = fopen(path, "r");//-------------------------------------------->1
+    if (file == NULL)//--------------------------------------------------->1
     {
-        printf("Não foi possível abrir o arquivo!\n");//----->1 ou 0
+        printf("Não foi possível abrir o arquivo!\n");//------------------>1
         return;
     }
 
-    while (!feof(file))//----------------------------------->n
+    while (!feof(file))//------------------------------------------------->n
     {
-        Reserva *r = malloc(sizeof(Reserva));//------------->n
-        res = fgets(linha, 1024, file);//------------------->n
-        tok = strtok(res, s);//----------------------------->n
-        r->prateleira = atoi(tok);//------------------------>n
-        while (tok != NULL)//------------------------------->n²
+        Reserva *r = malloc(sizeof(Reserva));//--------------------------->n
+        res = fgets(linha, 1024, file);//--------------------------------->n
+        tok = strtok(res, s);//------------------------------------------->n
+        r->prateleira = atoi(tok);//-------------------------------------->n
+        while (tok != NULL)//--------------------------------------------->n²
         {
-            r->cod = atoi(tok);//--------------------------->n²
-            tok = strtok(NULL, s);//------------------------>n²
+            r->cod = atoi(tok);//----------------------------------------->n²
+            tok = strtok(NULL, s);//-------------------------------------->n²
         }
 
-        Enfileira(R, *r);//--------------------------------->n+4
+        Enfileira(R, *r);//----------------------------------------------->n+4
     }
-    fclose(file);//----------------------------------------->1
-}//----------------------------------------------------->total: 3n²+6n+7
+    fclose(file);//------------------------------------------------------->1
+}//----------------------------------------------------------------------->total: 3n²+6n+7
 
 ```
 Lê o arquivo-texto linha a linha, sendo que a cada uma delas é caracterizado um volume e, um a um, estes são empilhados até que o arquivo-texto finalize. É considerado como o valor referente ao código da prateleira o algarismo após o R e os algarismos após a vírgula referem-se à variável da posição na prateleira.
@@ -199,19 +199,19 @@ Lê o arquivo-texto linha a linha, sendo que a cada uma delas é caracterizado u
 
 void Initialize(Lista *l)
 {
-	int id = 1;//---------------------------------->1
-	while (l->last != MAXTAM)//-------------------->n
+	int id = 1;//----------------------------------------------------->1
+	while (l->last != MAXTAM)//--------------------------------------->n
 	{
 		Prateleira d;
-		d.id = id;//------------------------------->n
+		d.id = id;//---------------------------------------------->n
 		id++;
-		for (int i = 0; i < MAXLIVRO; i++)//------->n(2n+2)
+		for (int i = 0; i < MAXLIVRO; i++)//---------------------->n(2n+2)
 		{
-			d.livros[i].cod = i;//----------------->n
-			d.livros[i].status = false;//---------->n
+			d.livros[i].cod = i;//---------------------------->n
+			d.livros[i].status = false;//--------------------->n
 		}
-		LInsert(l, d);//--------------------------->4
-	}//------------------------------------------>total:2n²+6n+4
+		LInsert(l, d);//------------------------------------------>4
+	}//--------------------------------------------------------------->total:2n²+6n+4
 }
 
 ```
@@ -221,27 +221,27 @@ Inicializa a prateleira de modo a criar o número de prateleiras necessárias e 
 void GuardarLivro(Pilha *L, Lista *P)
 {
     Block *aux;
-    aux = L->top;//------------------------------------------------>1
+    aux = L->top;//------------------------------------------------------->1
 
-    while (aux != L->base)//--------------------------------------->n
+    while (aux != L->base)//---------------------------------------------->n
     {
-        Pop(L, &aux->data);//-------------------------------------->n(4)
-        for (int i = 0; i < MAXTAM; i++)//------------------------->n(2n+2)
+        Pop(L, &aux->data);//--------------------------------------------->n(4)
+        for (int i = 0; i < MAXTAM; i++)//-------------------------------->n(2n+2)
         {
-            if ((aux->data.prateleira) == (P->vet[i].id))//-------->n²+n
+            if ((aux->data.prateleira) == (P->vet[i].id))//--------------->n²+n
             {
-                for (int j = 0; j < MAXLIVRO; j++)//--------------->n²(2n+2)
+                for (int j = 0; j < MAXLIVRO; j++)//---------------------->n²(2n+2)
                 {
-                    if (aux->data.cod == P->vet[i].livros[j].cod)//->n³
+                    if (aux->data.cod == P->vet[i].livros[j].cod)//------->n³
                     {
-                        P->vet[i].livros[j] = aux->data;//---------->n³
-                        P->vet[i].livros[j].status = true;//-------->n³
+                        P->vet[i].livros[j] = aux->data;//---------------->n³
+                        P->vet[i].livros[j].status = true;//-------------->n³
                     }
                 }
             }
         }
-        aux = aux->prox;//------------------------------------------>n
-    }//-------------------------------------------------------->total: 4n³+4n²+9n
+        aux = aux->prox;//------------------------------------------------>n
+    }//------------------------------------------------------------------->total: 4n³+4n²+9n
 }
 
 ```
@@ -255,17 +255,17 @@ void RetirarLivro(Fila *R, Lista *P)
     Blockf *aux;
     Blockf comp;
 
-    aux = R->first->prox;//--------------------------------------------->1
+    aux = R->first->prox;//----------------------------------------------->1
 
-    while (aux != NULL)//----------------------------------------------->n
+    while (aux != NULL)//------------------------------------------------->n
     {
-        comp = *aux;//-------------------------------------------------->n
-        Desenfileira(R, &aux->data);//---------------------------------->n(5)
-        for (int i = 0; i < MAXTAM; i++)//------------------------------>n(2n+2)
+        comp = *aux;//---------------------------------------------------->n
+        Desenfileira(R, &aux->data);//------------------------------------>n(5)
+        for (int i = 0; i < MAXTAM; i++)//-------------------------------->n(2n+2)
         {
-            if ((comp.data.prateleira) == (P->vet[i].id))//------------->n²+n
+            if ((comp.data.prateleira) == (P->vet[i].id))//--------------->n²+n
             {
-                for (int j = 0; j < MAXLIVRO; j++)//--------------------->n²(2n+2)
+                for (int j = 0; j < MAXLIVRO; j++)//---------------------->n²(2n+2)
                 {
                     if ((comp.data.cod) == (P->vet[i].livros[j].cod))//--->n³
                     {
@@ -273,16 +273,16 @@ void RetirarLivro(Fila *R, Lista *P)
                         {
                             P->vet[i].livros[j].status = false;//--------->n³
                         }
-                        else if (!P->vet[i].livros[j].status)//---------->0
+                        else if (!P->vet[i].livros[j].status)//----------->0
                         {
-                            printf("Livro indisponível!\n");//----------->0
+                            printf("Livro indisponível!\n");//------------>0
                         }
                     }
                 }
             }
         }
-        aux = aux->prox;//----------------------------------------------->n
-    }//------------------------------------------------------------->total: 4n³+4n²+10n
+        aux = aux->prox;//------------------------------------------------>n
+    }//------------------------------------------------------------------->total: 4n³+4n²+10n
 }
 
 ```
@@ -319,11 +319,3 @@ Terminado este processo, bastaria imprimir novamente o relatório e notar que ho
 Decorridos todas as etapas do processo para a realização projeto proposto, desde a sua idealização, modelagem, construção e desenvolvimento, conclui-se o quanto é importante estruturar o algoritmo de acordo com a demanda, porém sempre se atentando para as possibilidades de utilização de cada conhecimento adquirido, adequando as ferramentas, disponíveis na bibliografia, ao problema. Ao atentar-se a isto, é possível atingir um programa eficaz, ou seja, que consegue cumprir com a necessidade para a qual ele é desenvolvido e que o faça de maneira mais rápida e/ou barata, visto que muitas vezes um custo computacional elevado, pode inviabilizar uma ferramenta, destacando-se a importância da assertividade na escolha das estruturas e interações dos métodos nelas contidas.
 
 Dois fatores exemplificam o pensamento acima, sendo um deles relativo à escolha da estrutura e outro referente ao campo lógico dos métodos utilizados. Com relação à estrutura mais adequada, destaca-se a escolha pela pilha dinâmica no caso dos livros que seriam guardados nas prateleiras, já que não existe a necessidade dos livros serem guardados em alguma ordem específica e, também, o fato de escolher a lista estática para as prateleiras, considerando já conhecermos o tamanho da estrutura, o que torna mais adequada essa estrutura. Já no campo lógico dos métodos utilizados, vale destacar, novamente, a escolha em manter os livros nas prateleiras e apenas alterar o controlador booleano de disponibilidade deles, afinal caso o retirássemos, teríamos que colocá-lo novamente na mesma posição quando fosse do momento da devolução do livro, o que acarretaria em um processo mais oneroso do ponto de vista de custo computacional além de não fazer sentido lógico considerando que a classificação dos livros em uma biblioteca mantém os livros na mesma posição devido à ordem alfabética/tema.
-
-
-
-
-
-
-
-exit
