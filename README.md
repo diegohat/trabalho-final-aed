@@ -21,7 +21,7 @@ Considerando a situação da biblioteca THE BOOK IS ON THE TABLE foi decidido qu
 
 Dito isto, fica estipulado que o vigente projeto terá como grande área de conhecimento que será tratada, o gerenciamento de bibliotecas, tanto por ser uma área de suma importância para a disseminação de conhecimento e, consequente, evolução intelectual do ser humano, mas também por existir nessa área alguns locais que ainda necessitam de uma solução tecnológica para melhor controle dos exemplares. Sendo assim o segmento de nosso problema, terá foco nas estruturas de organização de livros considerando que é praticamente o coração do gerenciamento de biblioteca pois trata do cerne da atividade, que é a guarda, conservação e organização das publicações que possui.
 
-### Quais módulos das disciplinas usados:###
+### Quais módulos das disciplinas usados: ###
 
 Para a realização do projeto proposto, foram selecionados alguns módulos dos conhecimentos adquiridos durante o semestre da disciplina AEDS, de forma que a escolha e utilização de cada um deles, seja a mais adequada possível, trazendo maior qualidade e funcionalidade ao código. Para isso foram utilizados os aprendizados no que diz respeito à análise assintótica, estruturas lineares estáticas e estruturas lineares dinâmicas, tendo uma justificativa para cada utilização.
 
@@ -157,14 +157,167 @@ void pilhaTOK(char *path, Pilha *L)
 Lê o arquivo-texto linha a linha, sendo que a cada uma delas é caracterizado um volume e, um a um, estes são empilhados até que o arquivo-texto finalize. Considera-se o algarismo após o P referente à variável prateleira que representa o código da prateleira e os algarismos após a vírgula referem-se à posição na prateleira, por premissa adotada todos livros empilhados são com status em false, pois quando forem passados para a lista de prateleiras terão o status mudado para true.
 
 ```
-filaTOK(char *path, Fila *R)
+void filaTOK(char *path, Fila *R)
+{
+    FILE *file;
+    const char s[] = "R,";
+    char *tok;
+    char linha[1024];
+    char *res;
+
+    file = fopen(path, "r");//------------------------------->1
+    if (file == NULL)//-------------------------------------->1
+    {
+        printf("Não foi possível abrir o arquivo!\n");//----->1 ou 0
+        return;
+    }
+
+    while (!feof(file))//----------------------------------->n
+    {
+        Reserva *r = malloc(sizeof(Reserva));//------------->n
+        res = fgets(linha, 1024, file);//------------------->n
+        tok = strtok(res, s);//----------------------------->n
+        r->prateleira = atoi(tok);//------------------------>n
+        while (tok != NULL)//------------------------------->n²
+        {
+            r->cod = atoi(tok);//--------------------------->n²
+            tok = strtok(NULL, s);//------------------------>n²
+        }
+
+        Enfileira(R, *r);//--------------------------------->n+4
+    }
+    fclose(file);//----------------------------------------->1
+}//----------------------------------------------------->total: 3n²+6n+7
 
 ```
 Lê o arquivo-texto linha a linha, sendo que a cada uma delas é caracterizado um volume e, um a um, estes são empilhados até que o arquivo-texto finalize. É considerado como o valor referente ao código da prateleira o algarismo após o R e os algarismos após a vírgula referem-se à variável da posição na prateleira.
 
+### Guardar Livros: ###
 
+```
 
+void Initialize(Lista *l)
+{
+	int id = 1;//---------------------------------->1
+	while (l->last != MAXTAM)//-------------------->n
+	{
+		Prateleira d;
+		d.id = id;//------------------------------->n
+		id++;
+		for (int i = 0; i < MAXLIVRO; i++)//------->n(2n+2)
+		{
+			d.livros[i].cod = i;//----------------->n
+			d.livros[i].status = false;//---------->n
+		}
+		LInsert(l, d);//--------------------------->4
+	}//------------------------------------------>total:2n²+6n+4
+}
 
+```
+Inicializa a prateleira de modo a criar o número de prateleiras necessárias e posições por prateleira (MAXTAM MAXLIVROS), sendo adicionado o código da prateleira, da posição e o status como false, pois só tem o espaço do livro criado, sem o livro ainda.
+
+```
+void GuardarLivro(Pilha *L, Lista *P)
+{
+    Block *aux;
+    aux = L->top;//------------------------------------------------>1
+
+    while (aux != L->base)//--------------------------------------->n
+    {
+        Pop(L, &aux->data);//-------------------------------------->n(4)
+        for (int i = 0; i < MAXTAM; i++)//------------------------->n(2n+2)
+        {
+            if ((aux->data.prateleira) == (P->vet[i].id))//-------->n²+n
+            {
+                for (int j = 0; j < MAXLIVRO; j++)//--------------->n²(2n+2)
+                {
+                    if (aux->data.cod == P->vet[i].livros[j].cod)//->n³
+                    {
+                        P->vet[i].livros[j] = aux->data;//---------->n³
+                        P->vet[i].livros[j].status = true;//-------->n³
+                    }
+                }
+            }
+        }
+        aux = aux->prox;//------------------------------------------>n
+    }//-------------------------------------------------------->total: 4n³+4n²+9n
+}
+
+```
+Faz o pop na pilha de modo que todo elemento tenha o código da prateleira e da posição lidos e com isso possa ser alocado corretamente na posição em que foi designado. Em caso de encontrar a posição do livro que foi arrancado da pilha para procura, ele será incluído na lista das prateleiras e terá seu status alterado de false para true o que caracterizaria que ele estaria disponível para locação, ou seja, ele se encontra em prateleira.
+
+### Retira Livros ###
+
+```
+void RetirarLivro(Fila *R, Lista *P)
+{
+    Blockf *aux;
+    Blockf comp;
+
+    aux = R->first->prox;//--------------------------------------------->1
+
+    while (aux != NULL)//----------------------------------------------->n
+    {
+        comp = *aux;//-------------------------------------------------->n
+        Desenfileira(R, &aux->data);//---------------------------------->n(5)
+        for (int i = 0; i < MAXTAM; i++)//------------------------------>n(2n+2)
+        {
+            if ((comp.data.prateleira) == (P->vet[i].id))//------------->n²+n
+            {
+                for (int j = 0; j < MAXLIVRO; j++)//--------------------->n²(2n+2)
+                {
+                    if ((comp.data.cod) == (P->vet[i].livros[j].cod))//--->n³
+                    {
+                        if (P->vet[i].livros[j].status)//----------------->n³
+                        {
+                            P->vet[i].livros[j].status = false;//--------->n³
+                        }
+                        else if (!P->vet[i].livros[j].status)//---------->0
+                        {
+                            printf("Livro indisponível!\n");//----------->0
+                        }
+                    }
+                }
+            }
+        }
+        aux = aux->prox;//----------------------------------------------->n
+    }//------------------------------------------------------------->total: 4n³+4n²+10n
+}
+
+```
+Desenfileira livro a livro que está contido na fila de reservas e compara um a um aos livros contidos nas posições de cada uma das prateleiras, cobrindo toda a coleção de exemplares, e ao encontrar o livro procurado a partir da fila de reservas ele altera o status desse livro para false, o que faz com que ele seja considerado como indisponível, e prossegue para o próximo livro da fila de reservas até que ela seja inteiramente varrida.
+
+Caso o livro já não esteja disponível no momento da tentativa de reserva, o programa informa a indisponibilidade do mesmo e prossegue com a busca pelo próximo livro, caso ainda exista algum na fila ainda não procurado. 
+
+## O que espera receber como resultado: ##
+
+Desenvolvida toda a parte da implementação dos códigos do programa, é esperado que obtenha-se, como resultado, um relatório em que seria mostrado a relação de todos os livros por prateleira, de forma que essas seriam dispostas pela numeração, além é claro da relação dos livros que pertencem a cada prateleira. Ademais, seria informado também juntamente a cada exemplar, qual seu status no atual momento, isto é, se o livro encontra-se disponível ou se ele está locado, garantindo-se assim, todas as informações pertinentes para o bibliotecário, como se o exemplar existe na biblioteca, e caso exista, em que prateleira/posição ele se encontra e se ele tem disponibilidade para locação.
+
+Conforme adotado como premissa, a estrutura que representará as prateleiras será uma lista estática, devido ao fato de que o tamanho máximo dessa estrutura já está definida pois consideramos que essa dimensão deve-se referir ao tamanho físico disponível para o armazenamento dos livros – prateleiras e posições nas prateleiras. Portanto ao considerarmos que esta estrutura não terá o seu tamanho variando, não seria interessante se fazer a retirada e inclusão dos livros toda vez que algum deles for locado/devolvido, sendo utilizado como mecanismo para essa alteração de disponibilidade do livro, um controlador do tipo booleano que seria true quando o livro se encontra-se disponível. 
+
+Nota-se que tal estratégia já garante um ganho de custo computacional, visto que como a estrutura adotada não terá seu tamanho alterado é possível utilizar a forma estática da estrutura, além de garantir que o processo será mais barato por apenas trocar o status do livro quando no momento de locação ou devolução, considerando que não seria necessário incluir e excluir os livros toda vez que houvesse alguma alteração na disponibilidade.
+
+Logo o que se espera com este projeto e a implantação do mesmo é que o gerenciador da biblioteca possa ter em mãos de forma simples e ágil, as informações importantes para ele, como a disposição da coleção de exemplares pelas prateleiras, e também, se o título está livre para a locação, ou seja, disponível na prateleira informada, ou se ele está locado, o que mostraria ele na prateleira correspondente porém com status de indisponivel.
+
+## Resultados: ##
+
+Como resultado para o projeto proposto teremos, conforme já dito anteriormente, um relatório com as informações necessárias de cada livro para o gerenciamento de locações e devoluções. Foi montado um menu que possibilitará o usuário as opções das operações disponíveis que seriam:
+
+- Guardar livros;
+- Reserva de livros;
+- Impressão de relação de livros nas estantes.
+
+Para a demonstração do funcionamento do sistema, iremos realizar a leitura de dois arquivos de texto, sendo um o de livros a serem guardados no sistema e outro referente aos que seriam retirados do mesmo. Inicialmente selecionamos a opção de Guardar Livros, após a leitura do primeiro arquivo, seria gerada uma pilha com os livros que seriam guardados nas prateleiras, depois de gerada a pilha o próximo passo seria a inclusão desses itens nas prateleiras. Feito esse primeiro  processo, em caso de selecionarmos a opção de imprimir o relatório, apareceriam as prateleiras e os livros que a compõem definidos pela posição de cada um, além disso teríamos um status em que 1 considera ele como disponível e 0 ele é considerado locado.
+
+Para continuar a exemplificação do funcionamento do programa, passemos ao processo seguinte, que no caso será a Reserva de Livros, este procedimento terá a mesma base do anterior, onde um arquivo-texto seria lido para que fossem identificados quais livros seriam reservados, sendo que a cada livro a ser reservado, ele seria incluído na fila de reservas. Com ele na fila de reservas é preciso buscar na lista de prateleiras os livros contidos na fila, e ao ser encontrado, o livro teria o seu status de disponibilidade alterado para false, o que caracterizaria que ele estaria locado.
+
+Terminado este processo, bastaria imprimir novamente o relatório e notar que houve uma alteração do primeiro relatório gerado, onde os livros constantes no arquivo-texto de reservas teriam seus status alterados de 1 (disponível) para 0 (locado). Com isso é possível perceber que o sistema proposto funciona e poderia ser utilizado para gerenciar a biblioteca de modo a trazer melhorias no controle e otimização do processo de organização dos livros.
+
+## Conclusão: ##
+
+Decorridos todas as etapas do processo para a realização projeto proposto, desde a sua idealização, modelagem, construção e desenvolvimento, conclui-se o quanto é importante estruturar o algoritmo de acordo com a demanda, porém sempre se atentando para as possibilidades de utilização de cada conhecimento adquirido, adequando as ferramentas, disponíveis na bibliografia, ao problema. Ao atentar-se a isto, é possível atingir um programa eficaz, ou seja, que consegue cumprir com a necessidade para a qual ele é desenvolvido e que o faça de maneira mais rápida e/ou barata, visto que muitas vezes um custo computacional elevado, pode inviabilizar uma ferramenta, destacando-se a importância da assertividade na escolha das estruturas e interações dos métodos nelas contidas.
+
+Dois fatores exemplificam o pensamento acima, sendo um deles relativo à escolha da estrutura e outro referente ao campo lógico dos métodos utilizados. Com relação à estrutura mais adequada, destaca-se a escolha pela pilha dinâmica no caso dos livros que seriam guardados nas prateleiras, já que não existe a necessidade dos livros serem guardados em alguma ordem específica e, também, o fato de escolher a lista estática para as prateleiras, considerando já conhecermos o tamanho da estrutura, o que torna mais adequada essa estrutura. Já no campo lógico dos métodos utilizados, vale destacar, novamente, a escolha em manter os livros nas prateleiras e apenas alterar o controlador booleano de disponibilidade deles, afinal caso o retirássemos, teríamos que colocá-lo novamente na mesma posição quando fosse do momento da devolução do livro, o que acarretaria em um processo mais oneroso do ponto de vista de custo computacional além de não fazer sentido lógico considerando que a classificação dos livros em uma biblioteca mantém os livros na mesma posição devido à ordem alfabética/tema.
 
 
 
