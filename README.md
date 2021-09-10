@@ -4,7 +4,7 @@ CEFET - MG Campus V \
 Jorge Vitor G. de Souza \
 Gabriel Vitor Silva \
 Diego Trindade \
-Frederico Dantés Macedo Neves
+Frederico Dantés Macedo Neves\
 
 ## Compilar ##
 ```
@@ -290,6 +290,28 @@ void RetirarLivro(Fila *R, Lista *P)
 Desenfileira livro a livro que está contido na fila de reservas e compara um a um aos livros contidos nas posições de cada uma das prateleiras, cobrindo toda a coleção de exemplares, e ao encontrar o livro procurado a partir da fila de reservas ele altera o status desse livro para false, o que faz com que ele seja considerado como indisponível, e prossegue para o próximo livro da fila de reservas até que ela seja inteiramente varrida.
 
 Caso o livro já não esteja disponível no momento da tentativa de reserva, o programa informa a indisponibilidade do mesmo e prossegue com a busca pelo próximo livro, caso ainda exista algum na fila ainda não procurado. 
+
+### Análise Assintótica ###
+
+Como visto a decorrer do desenvolvimento os metódos usados, são de complexidade linear, quadratica e cubica.
+
+ f(n) = O(n): Esses algoritmos são ditos de complexidade linear
+ - Em geral, apenas um pequeno trabalho é realizado sob cada elemento da
+entrada
+ - É a melhor situação para um algoritmo que tenha que processar/produzir n
+elementos de entrada/saída
+
+f (n) = O(n²): Esses algoritmos são ditos de complexidade quadrática
+ - I Ocorrem quando os itens de dados são processados aos pares, muitas
+vezes em um laço dentro do outro
+ - Sempre que n dobra, o tempo de execução é multiplicado por 4
+ - Algoritmos úteis para resolver problemas de tamanhos relativamente
+pequenos
+
+f (n) = O(n³): Esses algoritmos são ditos de complexidade cúbica
+ - Úteis apenas para resolver pequenos problemas
+ - Quando n é 100, o número de operações é da ordem e 1 milhão
+ - Sempre que n dobra, o tempo de execução fica multiplicado por 8
 
 ## O que espera receber como resultado: ##
 
