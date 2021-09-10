@@ -1,9 +1,9 @@
 # Trabalho Final - Algoritmos e Estrutura de Dados #
 Trabalho realizado para a disciplina de Algoritmos e Estrutura de Dados \
 CEFET - MG Campus V \
-Jorge Vitor G. de Souza
-Gabriel Vitor Silva
-Diego Trindade
+Jorge Vitor G. de Souza \
+Gabriel Vitor Silva \
+Diego Trindade \
 
 ## Compilar ##
 ```
@@ -119,7 +119,39 @@ Lista que terá um vetor do tipo Prateleira e terá um valor pré-definido pela 
 ### Leitura dos arquivos de texto: ###
 
 ```
-pilhaTOK(char *path, Pilha *L)
+void pilhaTOK(char *path, Pilha *L)
+{
+    FILE *file;
+    const char s[] = "P,";
+    char *tok;
+    char linha[1024];
+    char *res;
+
+    file = fopen(path, "r");//-------------------------->n
+    if (file == NULL)
+    {
+        printf("Não foi possível abrir o arquivo!\n");//>1 ou 0
+        return;
+    }
+
+    while (!feof(file))//------------------------------->n
+    {
+        Livro *d = malloc(sizeof(Livro));//------------->n
+        res = fgets(linha, 1024, file);//--------------->n
+        tok = strtok(res, s);//------------------------->n
+        d->prateleira = atoi(tok);//-------------------->n
+
+        while (tok != NULL)//--------------------------->n²
+        {
+            d->cod = atoi(tok);//----------------------->n²
+            tok = strtok(NULL, s);//-------------------->n²
+            d->status = false;//------------------------>n²
+        }
+        Push(L, *d);//---------------------------------->n
+    }
+    fclose(file);//------------------------------------->1
+    //------------------------------------------->total: 4n²+7n+1
+}
 
 ```
 Lê o arquivo-texto linha a linha, sendo que a cada uma delas é caracterizado um volume e, um a um, estes são empilhados até que o arquivo-texto finalize. Considera-se o algarismo após o P referente à variável prateleira que representa o código da prateleira e os algarismos após a vírgula referem-se à posição na prateleira, por premissa adotada todos livros empilhados são com status em false, pois quando forem passados para a lista de prateleiras terão o status mudado para true.
