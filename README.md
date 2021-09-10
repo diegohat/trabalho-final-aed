@@ -36,6 +36,7 @@ Além do exposto acima, outro fator que foi determinante na escolha de qual estr
 ## Desenvolvimento: ##
 ### Estruturas ###
 ![Representação das estruturas e métodos](c_program_books.gif)
+
 Para o desenvolvimento do projeto conforme definido foram criados tipos de dados específicos para alcançar o objetivo proposto, essa tipagem foi criada a partir do registro struct, que faz com que possamos agrupar variáveis distintas sob um mesmo tipo de dado. Cada uma dessas struct’s criadas será apresentada a seguir.
 
 ```
